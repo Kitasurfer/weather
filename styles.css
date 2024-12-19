@@ -1,0 +1,803 @@
+/* Улучшенные переменные с более мягкой палитрой */
+:root {
+    /* Основные цвета */
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --accent-color: #f1c40f;
+    --text-color: #2c3e50;
+    --background-color: #ecf0f1;
+    --panel-background: rgba(255, 255, 255, 0.9);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    
+    /* Градиенты */
+    --gradient-day: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+    --gradient-night: linear-gradient(120deg, #203a43 0%, #2c5364 100%);
+    --gradient-sunset: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    --gradient-sunrise: linear-gradient(120deg, #fbc2eb 0%, #a6c1ee 100%);
+    
+    /* Темная тема */
+    --dark-primary: #2980b9;
+    --dark-secondary: #27ae60;
+    --dark-background: #2c3e50;
+    --dark-text: #ecf0f1;
+    --dark-panel: rgba(44, 62, 80, 0.9);
+    
+    /* Размеры */
+    --border-radius: 15px;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    
+    /* Анимации */
+    --transition-speed: 0.3s;
+    --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Основные стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--gradient-day);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background var(--transition-speed), color var(--transition-speed);
+    min-height: 100vh;
+}
+
+body.dark-theme {
+    background: var(--gradient-night);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+/* Шапка */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) 0;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+    z-index: 2;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transform-origin: left center;
+    transition: transform var(--transition-speed) var(--transition-bounce);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    animation: rotate 20s linear infinite;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.controls {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+/* Кнопки и элементы управления */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed) var(--transition-bounce);
+    position: relative;
+    overflow: hidden;
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+button:hover::after {
+    width: 200%;
+    height: 200%;
+}
+
+.units {
+    display: flex;
+    gap: 2px;
+    background: var(--panel-background);
+    border-radius: var(--border-radius);
+    padding: 2px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.units button {
+    padding: 5px 15px;
+    border-radius: calc(var(--border-radius) - 2px);
+    font-weight: 500;
+}
+
+.units button.active {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Поиск */
+.search-section {
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.search-box {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: var(--spacing-md);
+    border: none;
+    border-radius: var(--border-radius);
+    background: var(--panel-background);
+    font-size: 1rem;
+    transition: all var(--transition-speed);
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.search-box input:focus {
+    outline: none;
+    transform: translateZ(10px);
+    box-shadow: 0 8px 12px var(--shadow-color);
+}
+
+.search-box button {
+    padding: var(--spacing-md);
+    background: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.search-box button:hover {
+    background: var(--dark-primary);
+    transform: translateZ(5px);
+}
+
+.recent-searches {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-md);
+}
+
+.recent-searches button {
+    background: var(--panel-background);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: all var(--transition-speed) var(--transition-bounce);
+}
+
+.recent-searches button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Панели */
+.panel {
+    background: var(--panel-background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 8px 16px var(--shadow-color);
+    backdrop-filter: blur(10px);
+    transform-style: preserve-3d;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.panel:hover {
+    transform: translateY(-5px) rotateX(2deg);
+    box-shadow: 0 12px 24px var(--shadow-color);
+}
+
+/* Текущая погода */
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-lg);
+}
+
+.location-info h2 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-sm);
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.weather-main {
+    text-align: right;
+}
+
+.temperature {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 2px 2px 4px var(--shadow-color);
+}
+
+.weather-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.weather-icon i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    animation: float 3s ease-in-out infinite;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    transition: transform var(--transition-speed);
+}
+
+.detail:hover {
+    transform: translateY(-5px);
+}
+
+.detail i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Солнце и Луна */
+.sun-moon-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.sun-arc {
+    position: relative;
+    height: 200px;
+    margin-top: var(--spacing-lg);
+    overflow: hidden;
+}
+
+.sun {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    box-shadow: 0 0 30px var(--accent-color);
+    transition: all var(--transition-speed);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.time-markers {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-md);
+    font-weight: 500;
+}
+
+.moon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.moon-3d {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+}
+
+.moon-3d canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.moon-details {
+    width: 100%;
+    text-align: center;
+}
+
+.moon-phase-info {
+    margin-bottom: 15px;
+}
+
+.moon-phase-text {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.moon-illumination {
+    display: block;
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.moon-times {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin: 15px 0;
+}
+
+.moonrise, .moonset {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.moonrise i, .moonset i {
+    color: var(--accent-color);
+}
+
+.moon-age {
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Dark theme */
+.dark-theme .moon-times {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Прогноз */
+.forecast-nav {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    justify-content: center;
+}
+
+.forecast-nav button {
+    padding: 8px 20px;
+    font-weight: 500;
+    background: var(--panel-background);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.forecast-nav button.active {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.forecast-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.forecast-item {
+    text-align: center;
+    padding: var(--spacing-md);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed);
+    transform-style: preserve-3d;
+}
+
+.forecast-item:hover {
+    transform: scale(1.05) translateZ(10px);
+}
+
+.forecast-item i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin: var(--spacing-sm) 0;
+}
+
+/* Карты */
+.map-container {
+    margin-top: 20px;
+    padding: 15px;
+}
+
+#map {
+    width: 100%;
+    height: 300px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    z-index: 1;
+}
+
+.leaflet-container {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Loader */
+.loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Message Box */
+.message-box {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--panel-background);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.message-box.show {
+    opacity: 1;
+}
+
+/* Анимации */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 20px var(--accent-color); }
+    to { box-shadow: 0 0 40px var(--accent-color); }
+}
+
+@keyframes rotate3D {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Медиа запросы */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-sm);
+    }
+    
+    .weather-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .weather-main {
+        text-align: center;
+        margin-top: var(--spacing-md);
+    }
+    
+    .sun-moon-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .temperature {
+        font-size: 3rem;
+    }
+    
+    .detail {
+        padding: var(--spacing-sm);
+    }
+}
+
+/* Темная тема */
+body.dark-theme {
+    background: var(--gradient-night);
+}
+
+body.dark-theme .panel {
+    background: var(--dark-panel);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .search-box input {
+    background: var(--dark-panel);
+    color: var(--dark-text);
+}
+
+body.dark-theme .units,
+body.dark-theme .recent-searches button,
+body.dark-theme .forecast-nav button {
+    background: var(--dark-panel);
+    color: var(--dark-text);
+}
+
+body.dark-theme .forecast-item {
+    background: rgba(44, 62, 80, 0.5);
+}
+
+/* Эффекты наведения */
+.panel, .search-box input, button {
+    will-change: transform;
+}
+
+/* Улучшенная доступность */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Поддержка высококонтрастного режима */
+@media (prefers-contrast: high) {
+    :root {
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+    
+    .panel {
+        border: 1px solid var(--text-color);
+    }
+}
+
+/* Celestial Info Styles */
+.celestial-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.sun-info, .moon-info {
+    background: var(--panel-background);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.sun-info h3, .moon-info h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+/* Sun Animation */
+.sun-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.sun-arc {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.sun-path-bg {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 2;
+}
+
+.sun-path-progress {
+    fill: none;
+    stroke: var(--accent-color);
+    stroke-width: 2;
+    stroke-dasharray: 0;
+    transition: stroke-dasharray 0.3s ease;
+}
+
+.sun-dot {
+    fill: var(--accent-color);
+    filter: drop-shadow(0 0 4px var(--accent-color));
+    transition: transform 0.3s ease;
+}
+
+.sun-times {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 0 10px;
+}
+
+.sunrise, .sunset {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sunrise i, .sunset i {
+    color: var(--accent-color);
+}
+
+/* Units Toggle */
+.units {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.units button {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.units button.active {
+    opacity: 1;
+    font-weight: bold;
+}
+
+/* Forecast Section */
+.forecast-section {
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--panel-background);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.forecast-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.forecast-nav button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.forecast-nav button.active {
+    opacity: 1;
+}
+
+.forecast-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.forecast-item {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.forecast-item .forecast-day {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.forecast-item i {
+    font-size: 2rem;
+    margin: 10px 0;
+    color: var(--accent-color);
+}
+
+.forecast-item .forecast-temp {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.forecast-item .forecast-details {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}

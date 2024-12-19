@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherApp - Погодный помощник</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3498db">
+    <link rel="icon" type="image/png" href="icon.png">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-cloud-sun"></i>
+                <h1>WeatherApp</h1>
+            </div>
+            <div class="controls">
+                <button id="themeToggle" aria-label="Переключить тему">
+                    <i class="fas fa-adjust"></i>
+                </button>
+                <div class="units">
+                    <button data-unit="celsius" class="active">°C</button>
+                    <button data-unit="fahrenheit">°F</button>
+                </div>
+            </div>
+        </header>
+
+        <section class="search-section">
+            <div class="search-box">
+                <input type="text" id="cityInput" placeholder="Введите название города" aria-label="Поиск города">
+                <button id="searchBtn" aria-label="Поиск">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="locationBtn" aria-label="Определить местоположение">
+                    <i class="fas fa-map-marker-alt"></i>
+                </button>
+            </div>
+            <div id="recentSearches" class="recent-searches"></div>
+        </section>
+
+        <main class="weather-info">
+            <section class="current-weather panel">
+                <div class="weather-header">
+                    <div class="location-info">
+                        <h2 id="cityName">-</h2>
+                        <p id="currentDate">-</p>
+                    </div>
+                    <div class="weather-main">
+                        <div class="temperature">
+                            <span id="temp">-</span>
+                        </div>
+                        <div class="weather-icon">
+                            <i id="weatherIcon" class="fas"></i>
+                            <span id="weatherDescription">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="weather-details">
+                    <div class="detail">
+                        <i class="fas fa-wind"></i>
+                        <span>Ветер</span>
+                        <span id="windSpeed">-</span>
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-tint"></i>
+                        <span>Влажность</span>
+                        <span id="humidity">-</span>
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <span>Давление</span>
+                        <span id="pressure">-</span>
+                    </div>
+                    <div class="detail">
+                        <i class="fas fa-sun"></i>
+                        <span>УФ-индекс</span>
+                        <span id="uvIndex">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="celestial-info">
+                <div class="sun-info">
+                    <h3>Солнце</h3>
+                    <div id="sun3DContainer" class="sun-3d"></div>
+                    <div class="sun-container">
+                        <svg viewBox="0 0 200 100" class="sun-arc">
+                            <!-- Фон дуги -->
+                            <path d="M0,100 A100,100 0 0,1 200,100" class="sun-path-bg"/>
+                            <!-- Прогресс дуги -->
+                            <path d="M0,100 A100,100 0 0,1 200,100" class="sun-path-progress"/>
+                            <!-- Солнце -->
+                            <circle id="sunDot" r="5" class="sun-dot">
+                                <title>Текущее положение солнца</title>
+                            </circle>
+                        </svg>
+                        <div class="sun-times">
+                            <div class="sunrise">
+                                <i class="fas fa-sunrise"></i>
+                                <span id="sunrise"></span>
+                            </div>
+                            <div class="sunset">
+                                <i class="fas fa-sunset"></i>
+                                <span id="sunset"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="moon-info">
+                    <h3>Луна</h3>
+                    <div class="moon-container">
+                        <div id="moon3D" class="moon-3d"></div>
+                        <div class="moon-details">
+                            <div class="moon-phase-info">
+                                <span id="moonPhaseText" class="moon-phase-text"></span>
+                                <span id="moonIllumination" class="moon-illumination"></span>
+                            </div>
+                            <div class="moon-times">
+                                <div class="moonrise">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span id="moonrise"></span>
+                                </div>
+                                <div class="moonset">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span id="moonset"></span>
+                                </div>
+                            </div>
+                            <div class="moon-age">
+                                <span id="moonAge"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="forecast panel">
+                <h3>Прогноз погоды</h3>
+                <div class="forecast-nav">
+                    <button data-days="5" class="active">5 дней</button>
+                    <button data-days="10">10 дней</button>
+                </div>
+                <div id="forecastContainer" class="forecast-container"></div>
+            </section>
+
+            <section class="map-container panel">
+                <h3>Карта</h3>
+                <div id="map"></div>
+            </section>
+        </main>
+    </div>
+
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="weatherMessage" class="weather-message">
+        <i class="fas fa-info-circle"></i>
+        <span id="message"></span>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script type="module" src="config.js"></script>
+    <script type="module" src="index.js"></script>
+</body>
+</html>
